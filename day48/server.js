@@ -13,6 +13,9 @@ app.get("/", (req, res) => {
 });
 
 // TODO 1: /api/notices의 GET 요청에 notices 배열을 응답합니다.
+app.get("/api/notices", (req, res) => {
+  res.json(notices);
+});
 
 // TODO 2: /api/notice-count의 GET 요청에 공지 개수가 담긴 객체를 응답합니다.
 
