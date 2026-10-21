@@ -148,6 +148,16 @@ app.post("/api/movies", (req, res) => {
 
   // TODO 2: runtimeMinutes가 1 이상 300 이하의 정수인지 검사하세요.
   // 조건에 맞지 않으면 400과 안내 메시지를 응답하고 return하세요.
+  if (
+    !Number.isSafeInteger(runtimeMinutes) ||
+    runtimeMinutes <= 1 ||
+    runtimeMinutes >= 300
+  ) {
+    res
+      .status(400)
+      .json({ message: "상영 시간은 1 이상 300 이하의 정수로 입력해 주세요." });
+    return;
+  }
 
   const newMovie = {
     id: nextMovieId,
