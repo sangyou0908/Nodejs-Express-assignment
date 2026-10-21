@@ -117,6 +117,7 @@ app.post("/api/movies", (req, res) => {
   const overview = body.overview;
 
   // TODO 1: body에서 runtimeMinutes를 읽어 변수에 저장하세요.
+  const runtimeMinutes = body.runtimeMinutes;
 
   if (typeof title !== "string" || title.trim() === "") {
     res.status(400).json({ message: "영화 제목을 입력해 주세요." });
