@@ -4,20 +4,20 @@ const app = express();
 
 const notices = [
   {
-    "id": 1,
-    "title": "수업 일정 안내",
-    "content": "이번 주 수업은 오전 10시에 시작합니다."
+    id: 1,
+    title: "수업 일정 안내",
+    content: "이번 주 수업은 오전 10시에 시작합니다.",
   },
   {
-    "id": 2,
-    "title": "과제 제출 안내",
-    "content": "과제는 다음 수업 시작 전까지 제출해 주세요."
+    id: 2,
+    title: "과제 제출 안내",
+    content: "과제는 다음 수업 시작 전까지 제출해 주세요.",
   },
   {
-    "id": 3,
-    "title": "시스템 점검",
-    "content": "토요일 오전에는 학습 사이트를 점검합니다."
-  }
+    id: 3,
+    title: "시스템 점검",
+    content: "토요일 오전에는 학습 사이트를 점검합니다.",
+  },
 ];
 
 app.get("/", (req, res) => {
@@ -29,9 +29,18 @@ app.get("/api/notices", (req, res) => {
     typeof req.query.query === "string" ? req.query.query.trim() : "";
 
   // TODO 1: filter()로 제목에 keyword가 포함된 공지만 선택합니다.
+  const filteredNotices = notices.filter((notice) =>
+    notice.title.includes(keyword),
+  );
+
   // TODO 2: 선택한 공지를 map()으로 id와 title만 가진 객체의 배열로 만듭니다.
+  const result = filteredNotices.map((notice) => ({
+    id: notice.id,
+    title: notice.title,
+  }));
+
   // TODO 3: 아래 응답을 수정하여 가공한 목록을 응답합니다.
-  res.json(notices);
+  res.json(result);
 });
 
 app.get("/api/notice-count", (req, res) => {
