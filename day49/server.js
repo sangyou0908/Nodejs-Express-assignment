@@ -47,7 +47,6 @@ app.get("/api/notice-count", (req, res) => {
   res.json({ noticeCount: notices.length });
 });
 
-/*
 app.get("/api/notices/:id", (req, res) => {
   const noticeId = Number(req.params.id);
 
@@ -57,11 +56,17 @@ app.get("/api/notices/:id", (req, res) => {
   }
 
   // TODO 4: find()로 noticeId와 ID가 같은 공지를 찾습니다.
-  // TODO 5: 공지가 없으면 404와 안내 메시지를 응답하고 함수를 종료합니다.
-  // TODO 6: 공지가 있으면 해당 객체를 응답합니다.
-});
+  const notice = notices.find((notice) => notice.id === noticeId);
 
-*/
+  // TODO 5: 공지가 없으면 404와 안내 메시지를 응답하고 함수를 종료합니다.
+  if (!notice) {
+    res.status(404).json({ message: "공지를 찾을 수 없습니다." });
+    return;
+  }
+
+  // TODO 6: 공지가 있으면 해당 객체를 응답합니다.
+  res.json(notice);
+});
 
 app.listen(4000, () => {
   console.log("서버 실행: http://localhost:4000");
