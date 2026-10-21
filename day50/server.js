@@ -166,6 +166,7 @@ app.post("/api/movies", (req, res) => {
     releaseYear: releaseYear,
     overview: overview.trim(),
     // TODO 3: 검사한 runtimeMinutes를 새 영화 객체에 포함하세요.
+    runtimeMinutes: runtimeMinutes,
   };
 
   movies.push(newMovie);
