@@ -39,6 +39,9 @@ app.get("/api/movie-catalog", async (req, res) => {
       .order("id", { ascending: true });
 
     // TODO 2: error가 있으면 throw error로 catch에 전달하세요.
+    if (error) {
+      throw error;
+    }
 
     // TODO 3: 상태 코드 200과 data를 응답하세요.
   } catch (error) {
