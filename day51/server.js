@@ -44,6 +44,7 @@ app.get("/api/movie-catalog", async (req, res) => {
     }
 
     // TODO 3: 상태 코드 200과 data를 응답하세요.
+    res.status(200).json(data);
   } catch (error) {
     console.error("영화 안내 목록 조회 실패:", error);
     // TODO 4: 상태 코드 500과 지정된 안내 메시지를 응답하세요.
