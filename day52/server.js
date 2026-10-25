@@ -151,6 +151,9 @@ app.get("/api/movies-by-director", async (req, res) => {
   } catch (error) {
     console.error("감독별 영화 조회 실패:", error);
     // TODO 4: 500과 '감독별 영화 목록을 불러오지 못했습니다.'를 응답하세요.
+    res
+      .status(500)
+      .json({ message: "감독별 영화 목록을 불러오지 못했습니다." });
   }
 });
 
