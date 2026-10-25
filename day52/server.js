@@ -142,6 +142,9 @@ app.get("/api/movies-by-director", async (req, res) => {
       .order("id", { ascending: true });
 
     // TODO 2: error가 있으면 throw error로 던지세요.
+    if (error) {
+      throw error;
+    }
 
     // TODO 3: 200과 data를 응답하세요.
   } catch (error) {
