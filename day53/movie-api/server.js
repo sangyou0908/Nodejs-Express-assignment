@@ -5,6 +5,11 @@ import { supabase } from "./supabase.js";
 const app = express();
 
 // TODO 1: React 앱의 출처를 허용하는 CORS Middleware를 등록하세요.
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 
 app.use(express.json());
 
@@ -14,9 +19,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/movies", async (req, res) => {
   const keyword =
-    typeof req.query.query === "string"
-      ? req.query.query.trim()
-      : "";
+    typeof req.query.query === "string" ? req.query.query.trim() : "";
 
   try {
     const { data, error } = await supabase
@@ -39,11 +42,7 @@ app.get("/api/movies", async (req, res) => {
 app.get("/api/movies/:id", async (req, res) => {
   const movieId = Number(req.params.id);
 
-  if (
-    !Number.isSafeInteger(movieId) ||
-    movieId <= 0 ||
-    movieId > 2147483647
-  ) {
+  if (!Number.isSafeInteger(movieId) || movieId <= 0 || movieId > 2147483647) {
     res.status(400).json({
       message: "영화 ID는 1 이상 2147483647 이하의 정수로 입력해 주세요.",
     });
@@ -102,7 +101,9 @@ app.post("/api/movies", async (req, res) => {
   }
 
   if (!Number.isSafeInteger(releaseYear) || releaseYear <= 0) {
-    res.status(400).json({ message: "개봉 연도는 양의 정수인 숫자로 보내 주세요." });
+    res
+      .status(400)
+      .json({ message: "개봉 연도는 양의 정수인 숫자로 보내 주세요." });
     return;
   }
 
