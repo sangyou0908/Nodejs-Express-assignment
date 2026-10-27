@@ -4,9 +4,11 @@ import { supabase } from "./supabase.js";
 
 const app = express();
 
-app.use(cors({
-  origin: "http://localhost:5173",
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 
 app.use(express.json());
 
@@ -16,9 +18,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/movies", async (req, res) => {
   const keyword =
-    typeof req.query.query === "string"
-      ? req.query.query.trim()
-      : "";
+    typeof req.query.query === "string" ? req.query.query.trim() : "";
 
   try {
     const { data, error } = await supabase
@@ -41,11 +41,7 @@ app.get("/api/movies", async (req, res) => {
 app.get("/api/movies/:id", async (req, res) => {
   const movieId = Number(req.params.id);
 
-  if (
-    !Number.isSafeInteger(movieId) ||
-    movieId <= 0 ||
-    movieId > 2147483647
-  ) {
+  if (!Number.isSafeInteger(movieId) || movieId <= 0 || movieId > 2147483647) {
     res.status(400).json({
       message: "영화 ID는 1 이상 2147483647 이하의 정수로 입력해 주세요.",
     });
@@ -104,7 +100,9 @@ app.post("/api/movies", async (req, res) => {
   }
 
   if (!Number.isSafeInteger(releaseYear) || releaseYear <= 0) {
-    res.status(400).json({ message: "개봉 연도는 양의 정수인 숫자로 보내 주세요." });
+    res
+      .status(400)
+      .json({ message: "개봉 연도는 양의 정수인 숫자로 보내 주세요." });
     return;
   }
 
@@ -141,11 +139,7 @@ app.post("/api/movies", async (req, res) => {
 app.delete("/api/movies/:id", async (req, res) => {
   const movieId = Number(req.params.id);
 
-  if (
-    !Number.isSafeInteger(movieId) ||
-    movieId <= 0 ||
-    movieId > 2147483647
-  ) {
+  if (!Number.isSafeInteger(movieId) || movieId <= 0 || movieId > 2147483647) {
     res.status(400).json({
       message: "영화 ID는 1 이상 2147483647 이하의 정수로 입력해 주세요.",
     });
@@ -154,14 +148,25 @@ app.delete("/api/movies/:id", async (req, res) => {
 
   try {
     // TODO 1: movieId와 ID가 같은 행을 삭제하고, 삭제된 ID를 객체로 받습니다.
+    const { data, error } = await supabase
+      .from("movies")
+      .delete()
+      .eq("id", movieId)
+      .select("id")
+      .maybeSingle();
 
     if (error) {
       throw error;
     }
 
     // TODO 2: data가 null이면 404와 안내 메시지를 응답한 뒤 return합니다.
+    if (data === null) {
+      res.status(404).json({ message: "삭제할 영화를 찾을 수 없습니다." });
+      return;
+    }
 
     // TODO 3: 삭제되었다면 200과 data를 응답합니다.
+    res.status(200).json(data);
   } catch (error) {
     console.error("영화 삭제 처리 중 예외 발생:", error);
     res.status(500).json({ message: "영화를 삭제하지 못했습니다." });
