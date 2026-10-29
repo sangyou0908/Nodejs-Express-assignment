@@ -20,35 +20,13 @@ app.get("/api/movies", async (req, res) => {
   const keyword =
     typeof req.query.query === "string" ? req.query.query.trim() : "";
 
-  try {
-    const { data, error } = await supabase
-      .from("movies")
-      .select("id, title, director, releaseYear, overview")
-      .ilike("title", `%${keyword}%`)
-      .order("id", { ascending: true });
-
-    if (error) {
-      throw error;
-    }
-
-    res.status(200).json(data);
-  } catch (error) {
-    console.error("영화 목록 처리 중 예외 발생:", error);
-    res.status(500).json({ message: "영화 목록을 불러오지 못했습니다." });
-  }
-});
-
-app.get("/api/movies", async (req, res) => {
-  const keyword =
-    typeof req.query.query === "string" ? req.query.query.trim() : "";
-
   // TODO 1: sort의 기본값을 지정하고 if / else if로 column과 ascending을 정하세요. 허용하지 않은 값은 400으로 응답합니다.
   const sort = req.query.sort === undefined ? "id_asc" : req.query.sort;
 
   let column;
   let ascending;
 
-  if (sort === "id=asc") {
+  if (sort === "id_asc") {
     column = "id";
     ascending = true;
   } else if (sort === "year_desc") {
@@ -60,7 +38,7 @@ app.get("/api/movies", async (req, res) => {
   } else {
     res.status(400).json({
       message:
-        "정렬 기준을 하나로 선택해서 요청하세요. (id=asc / year_desc / year_asc)",
+        "정렬 기준을 하나로 선택해서 요청하세요. (id_asc / year_desc / year_asc)",
     });
     return;
   }
