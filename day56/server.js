@@ -67,6 +67,13 @@ app.get("/api/movies", async (req, res) => {
 
   try {
     // TODO 2: 검색 조건과 선택한 정렬 기준을 지정하고, await로 data와 error를 받으세요.
+    const { data, error } = await supabase
+      .from("movies")
+      .select("id, title, director, releaseYear, overview")
+      .ilike("title", `%${keyword}%`)
+      .order(column, {
+        ascending: ascending,
+      });
 
     if (error) {
       throw error;
